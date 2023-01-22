@@ -611,40 +611,31 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
             ?
 
 //location ion with blue color radius
-            Stack(
-                children: [
-                  Container(
+
+            Container(
+                height: 50,
+                width: 50,
+                child: Center(
+                  child: Container(
                     height: 50,
                     width: 50,
-                    child: Icon(
-                      Icons.location_on,
-                      size: 50,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    width: 50,
+                    decoration: BoxDecoration(
+                        color: Colors.blue.withOpacity(0.3),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.blue)),
                     child: Center(
                       child: Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(50)),
-                        child: Center(
-                          child: Container(
-                            height: 25,
-                            width: 25,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(50)),
-                          ),
+                        height: 20,
+                        width: 20,
+                        child: const Icon(
+                          Icons.location_on,
+                          size: 50,
+                          color: Colors.red,
                         ),
                       ),
                     ),
                   ),
-                ],
+                ),
               )
             : Icon(
                 widget.markerIcon,
@@ -663,32 +654,48 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
-            height: 50,
-            child: Row(
-              children: [
-                Spacer(),
-                TextField(
-                  controller: _radusController,
-                  onChanged: ((value) {
-                    setState(() {});
-                  }),
-                  decoration: InputDecoration(
-                    hintText: "Enter Radius",
-                    hintStyle: TextStyle(color: Colors.black),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.blue),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.blue),
-                    ),
+          child: widget.ismarkerWidget
+              ? Container(
+                  height: 100,
+                  child: Row(
+                    children: [
+                      TextField(
+                        controller: _radusController,
+                        onChanged: ((value) {
+                          setState(() {});
+                        }),
+                        decoration: InputDecoration(
+                          hintText: "Enter Radius",
+                          hintStyle: TextStyle(color: Colors.black),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
+                        ),
+                      ),
+                      WideButton(widget.selectLocationButtonText,
+                          onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        pickData().then((value) {
+                          widget.onPicked(value);
+                        }, onError: (e) => onError(e)).whenComplete(
+                            () => setState(() {
+                                  isLoading = false;
+                                }));
+                      },
+                          style: widget.selectLocationButtonStyle,
+                          textColor: widget.selectLocationTextColor),
+                    ],
                   ),
-                ),
-                Spacer(),
-                WideButton(widget.selectLocationButtonText,
-                    onPressed: () async {
+                )
+              : WideButton(widget.selectLocationButtonText,
+                  onPressed: () async {
                   setState(() {
                     isLoading = true;
                   });
@@ -699,12 +706,8 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
                             isLoading = false;
                           }));
                 },
-                    style: widget.selectLocationButtonStyle,
-                    textColor: widget.selectLocationTextColor),
-                Spacer(),
-              ],
-            ),
-          ),
+                  style: widget.selectLocationButtonStyle,
+                  textColor: widget.selectLocationTextColor),
         ),
       ),
     );
