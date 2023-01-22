@@ -614,6 +614,7 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
 
             Container(
                 height: 50,
+                width: 50,
                 child: Stack(
                   children: [
                     Container(
@@ -662,21 +663,24 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
                   height: 100,
                   child: Row(
                     children: [
-                      TextField(
-                        controller: _radusController,
-                        onChanged: ((value) {
-                          setState(() {});
-                        }),
-                        decoration: InputDecoration(
-                          hintText: "Enter Radius",
-                          hintStyle: TextStyle(color: Colors.black),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.blue),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.blue),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: TextField(
+                          controller: _radusController,
+                          onChanged: ((value) {
+                            setState(() {});
+                          }),
+                          decoration: InputDecoration(
+                            hintText: "Enter Radius",
+                            hintStyle: TextStyle(color: Colors.black),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
                         ),
                       ),
