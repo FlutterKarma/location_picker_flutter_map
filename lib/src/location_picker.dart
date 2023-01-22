@@ -615,23 +615,19 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
             Container(
                 height: 50,
                 width: 50,
+                decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.3),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.blue)),
                 child: Center(
                   child: Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.3),
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.blue)),
+                    height: 20,
+                    width: 20,
                     child: Center(
-                      child: Container(
-                        height: 20,
-                        width: 20,
-                        child: const Icon(
-                          Icons.location_on,
-                          size: 50,
-                          color: Colors.red,
-                        ),
+                      child: Icon(
+                        Icons.location_on,
+                        size: 50,
+                        color: Colors.red,
                       ),
                     ),
                   ),
@@ -654,58 +650,60 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: widget.ismarkerWidget
-              ? Container(
-                  height: 100,
-                  child: Row(
-                    children: [
-                      TextField(
-                        controller: _radusController,
-                        onChanged: ((value) {
-                          setState(() {});
-                        }),
-                        decoration: InputDecoration(
-                          hintText: "Enter Radius",
-                          hintStyle: TextStyle(color: Colors.black),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.blue),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.blue),
-                          ),
-                        ),
-                      ),
-                      WideButton(widget.selectLocationButtonText,
-                          onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        pickData().then((value) {
-                          widget.onPicked(value);
-                        }, onError: (e) => onError(e)).whenComplete(
-                            () => setState(() {
-                                  isLoading = false;
-                                }));
-                      },
-                          style: widget.selectLocationButtonStyle,
-                          textColor: widget.selectLocationTextColor),
-                    ],
-                  ),
-                )
-              : WideButton(widget.selectLocationButtonText,
-                  onPressed: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  pickData().then((value) {
-                    widget.onPicked(value);
-                  }, onError: (e) => onError(e)).whenComplete(
-                      () => setState(() {
-                            isLoading = false;
-                          }));
-                },
+          child:
+
+              // widget.ismarkerWidget
+              //     ? Container(
+              //         height: 100,
+              //         child: Row(
+              //           children: [
+              //             TextField(
+              //               controller: _radusController,
+              //               onChanged: ((value) {
+              //                 setState(() {});
+              //               }),
+              //               decoration: InputDecoration(
+              //                 hintText: "Enter Radius",
+              //                 hintStyle: TextStyle(color: Colors.black),
+              //                 border: OutlineInputBorder(
+              //                   borderRadius: BorderRadius.circular(10),
+              //                   borderSide: BorderSide(color: Colors.blue),
+              //                 ),
+              //                 focusedBorder: OutlineInputBorder(
+              //                   borderRadius: BorderRadius.circular(10),
+              //                   borderSide: BorderSide(color: Colors.blue),
+              //                 ),
+              //               ),
+              //             ),
+              //             WideButton(widget.selectLocationButtonText,
+              //                 onPressed: () async {
+              //               setState(() {
+              //                 isLoading = true;
+              //               });
+              //               pickData().then((value) {
+              //                 widget.onPicked(value);
+              //               }, onError: (e) => onError(e)).whenComplete(
+              //                   () => setState(() {
+              //                         isLoading = false;
+              //                       }));
+              //             },
+              //                 style: widget.selectLocationButtonStyle,
+              //                 textColor: widget.selectLocationTextColor),
+              //           ],
+              //         ),
+              //       )
+              //     :
+
+              WideButton(widget.selectLocationButtonText, onPressed: () async {
+            setState(() {
+              isLoading = true;
+            });
+            pickData().then((value) {
+              widget.onPicked(value);
+            }, onError: (e) => onError(e)).whenComplete(() => setState(() {
+                  isLoading = false;
+                }));
+          },
                   style: widget.selectLocationButtonStyle,
                   textColor: widget.selectLocationTextColor),
         ),
