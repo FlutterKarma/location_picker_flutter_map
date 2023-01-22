@@ -149,6 +149,7 @@ class FlutterLocationPicker extends StatefulWidget {
   final IconData markerIcon;
 
   final Widget? markerWidget;
+  final void Function(String locationRadius) locationRadius;
 
   const FlutterLocationPicker({
     Key? key,
@@ -182,6 +183,7 @@ class FlutterLocationPicker extends StatefulWidget {
     this.markerIconColor = Colors.red,
     this.markerIcon = Icons.location_pin,
     this.markerWidget,
+    required this.locationRadius,
     Widget? loadingWidget,
   })  : loadingWidget = loadingWidget ?? const CircularProgressIndicator(),
         super(key: key);
@@ -197,6 +199,8 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
   // Create a animation controller that has a duration and a TickerProvider.
   late AnimationController _animationController;
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _radusController = TextEditingController();
+
   final FocusNode _focusNode = FocusNode();
   List<OSMdata> _options = <OSMdata>[];
   LatLng? initPosition;
@@ -621,19 +625,43 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: WideButton(widget.selectLocationButtonText,
-              onPressed: () async {
-            setState(() {
-              isLoading = true;
-            });
-            pickData().then((value) {
-              widget.onPicked(value);
-            }, onError: (e) => onError(e)).whenComplete(() => setState(() {
-                  isLoading = false;
-                }));
-          },
-              style: widget.selectLocationButtonStyle,
-              textColor: widget.selectLocationTextColor),
+          child: Row(
+            children: [
+              Spacer(),
+              TextField(
+                controller: _radusController,
+                onChanged: ((value) {
+                  setState(() {});
+                }),
+                decoration: InputDecoration(
+                  hintText: "Enter Radius",
+                  hintStyle: TextStyle(color: Colors.black),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                ),
+              ),
+              Spacer(),
+              WideButton(widget.selectLocationButtonText, onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                pickData().then((value) {
+                  widget.onPicked(value);
+                }, onError: (e) => onError(e)).whenComplete(() => setState(() {
+                      isLoading = false;
+                    }));
+              },
+                  style: widget.selectLocationButtonStyle,
+                  textColor: widget.selectLocationTextColor),
+              Spacer(),
+            ],
+          ),
         ),
       ),
     );
