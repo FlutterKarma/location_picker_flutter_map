@@ -148,6 +148,8 @@ class FlutterLocationPicker extends StatefulWidget {
   ///
   final IconData markerIcon;
 
+  final Widget? markerWidget;
+
   const FlutterLocationPicker({
     Key? key,
     required this.onPicked,
@@ -179,6 +181,7 @@ class FlutterLocationPicker extends StatefulWidget {
     this.locationButtonsColor,
     this.markerIconColor = Colors.red,
     this.markerIcon = Icons.location_pin,
+    this.markerWidget,
     Widget? loadingWidget,
   })  : loadingWidget = loadingWidget ?? const CircularProgressIndicator(),
         super(key: key);
@@ -600,11 +603,12 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
     return Positioned.fill(
         child: IgnorePointer(
       child: Center(
-        child: Icon(
-          widget.markerIcon,
-          color: widget.markerIconColor,
-          size: 50,
-        ),
+        child: widget.markerWidget ??
+            Icon(
+              widget.markerIcon,
+              color: widget.markerIconColor,
+              size: 50,
+            ),
       ),
     ));
   }
