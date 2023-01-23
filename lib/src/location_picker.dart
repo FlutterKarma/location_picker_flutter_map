@@ -604,6 +604,18 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
   }
 
   Widget _buildMarker() {
+    double baseRadius = double.parse(
+        _radusController.text.isEmpty ? "50" : _radusController.text);
+    double currentZoom = _mapController.zoom;
+    double adjustedRadius = baseRadius / currentZoom;
+
+    _mapController.mapEventStream.listen((event) {
+      setState(() {
+        double zoom = event.zoom;
+        adjustedRadius = baseRadius / zoom;
+      });
+    });
+
     return Positioned.fill(
         child: IgnorePointer(
       child: Center(
@@ -614,24 +626,24 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
 
             _radusController.text.isEmpty
                 ? Container(
-                    height: 30,
-                    width: 30,
+                    height: 40,
+                    width: 40,
                     child: Center(
                       child: Icon(
                         Icons.location_on,
-                        size: 20,
+                        size: 40,
                         color: Colors.red,
                       ),
                     ),
                   )
                 : Container(
-                    height: double.parse(_radusController.text) * 2,
-                    width: double.parse(_radusController.text) * 2,
+                    height: adjustedRadius * 2,
+                    width: adjustedRadius * 2,
                     child: Stack(
                       children: [
                         Container(
-                          height: double.parse(_radusController.text) * 2,
-                          width: double.parse(_radusController.text) * 2,
+                          height: adjustedRadius * 2,
+                          width: adjustedRadius * 2,
                           decoration: BoxDecoration(
                               color: Colors.blue.withOpacity(0.3),
                               shape: BoxShape.circle,
