@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -409,7 +410,7 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
               _radusController.text.isEmpty ? "50" : _radusController.text);
 
           double zoom = event.zoom;
-          adjustedRadius = baseRadius / zoom;
+          adjustedRadius = calculateRadiusInMeters(baseRadius, zoom);
         });
       }
     });
@@ -694,7 +695,12 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
                           controller: _radusController,
                           keyboardType: TextInputType.number,
                           onChanged: ((value) {
-                            setState(() {});
+                            setState(() {
+                              double currentZoom = _mapController.zoom;
+                              adjustedRadius = calculateRadiusInMeters(
+                                  double.parse(value.isEmpty ? "0" : value),
+                                  currentZoom);
+                            });
                           }),
                           decoration: InputDecoration(
                             hintText: "Enter Radius",
@@ -745,6 +751,12 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
         ),
       ),
     );
+  }
+
+  double calculateRadiusInMeters(double baseRadius, double currentZoom) {
+    const earthCircumference = 40075017;
+    final metersPerPixel = earthCircumference / (256 * pow(2, currentZoom));
+    return baseRadius / metersPerPixel;
   }
 
   @override
