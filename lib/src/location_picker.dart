@@ -723,6 +723,7 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
                         });
                         pickData().then((value) {
                           widget.onPicked(value);
+                          widget.locationRadius(_radusController.text);
                         }, onError: (e) => onError(e)).whenComplete(
                             () => setState(() {
                                   isLoading = false;
