@@ -352,6 +352,10 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
     return PickedData(center, displayName, decodedResponse['address']);
   }
 
+  double baseRadius = 50;
+  double currentZoom = 5;
+  double adjustedRadius = 40;
+
   @override
   void setState(fn) {
     if (mounted) {
@@ -400,6 +404,13 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
     _mapController.mapEventStream.listen((event) async {
       if (event is MapEventMoveEnd) {
         setNameCurrentPos(event.center.latitude, event.center.longitude);
+        setState(() {
+          double baseRadius = double.parse(
+              _radusController.text.isEmpty ? "50" : _radusController.text);
+
+          double zoom = event.zoom;
+          adjustedRadius = baseRadius / zoom;
+        });
       }
     });
 
@@ -604,18 +615,6 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
   }
 
   Widget _buildMarker() {
-    double baseRadius = double.parse(
-        _radusController.text.isEmpty ? "50" : _radusController.text);
-    double currentZoom = _mapController.zoom;
-    double adjustedRadius = baseRadius / currentZoom;
-
-    _mapController.mapEventStream.listen((event) {
-      setState(() {
-        double zoom = event.zoom;
-        adjustedRadius = baseRadius / zoom;
-      });
-    });
-
     return Positioned.fill(
         child: IgnorePointer(
       child: Center(
