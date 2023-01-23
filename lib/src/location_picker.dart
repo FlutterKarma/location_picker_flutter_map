@@ -664,7 +664,8 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
                   child: Row(
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width / 3,
+                        color: Colors.white,
+                        width: MediaQuery.of(context).size.width / 5,
                         child: TextField(
                           controller: _radusController,
                           onChanged: ((value) {
@@ -684,20 +685,20 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
                           ),
                         ),
                       ),
-                      // WideButton(widget.selectLocationButtonText,
-                      //     onPressed: () async {
-                      //   setState(() {
-                      //     isLoading = true;
-                      //   });
-                      //   pickData().then((value) {
-                      //     widget.onPicked(value);
-                      //   }, onError: (e) => onError(e)).whenComplete(
-                      //       () => setState(() {
-                      //             isLoading = false;
-                      //           }));
-                      // },
-                      //     style: widget.selectLocationButtonStyle,
-                      //     textColor: widget.selectLocationTextColor),
+                      WideButton(widget.selectLocationButtonText,
+                          onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        pickData().then((value) {
+                          widget.onPicked(value);
+                        }, onError: (e) => onError(e)).whenComplete(
+                            () => setState(() {
+                                  isLoading = false;
+                                }));
+                      },
+                          style: widget.selectLocationButtonStyle,
+                          textColor: widget.selectLocationTextColor),
                     ],
                   ),
                 )
