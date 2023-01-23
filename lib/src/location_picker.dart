@@ -612,35 +612,47 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
 
 //location ion with blue color radius
 
-            Container(
-                height: 50,
-                width: 50,
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.3),
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.blue)),
-                    ),
-                    Center(
-                      child: Container(
-                        height: 20,
-                        width: 20,
-                        child: Center(
-                          child: Icon(
-                            Icons.location_on,
-                            size: 20,
-                            color: Colors.red,
-                          ),
-                        ),
+            _radusController.text.isEmpty
+                ? Container(
+                    height: 30,
+                    width: 30,
+                    child: Center(
+                      child: Icon(
+                        Icons.location_on,
+                        size: 20,
+                        color: Colors.red,
                       ),
-                    )
-                  ],
-                ),
-              )
+                    ),
+                  )
+                : Container(
+                    height: double.parse(_radusController.text) * 2,
+                    width: double.parse(_radusController.text) * 2,
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: double.parse(_radusController.text) * 2,
+                          width: double.parse(_radusController.text) * 2,
+                          decoration: BoxDecoration(
+                              color: Colors.blue.withOpacity(0.3),
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.blue)),
+                        ),
+                        Center(
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            child: Center(
+                              child: Icon(
+                                Icons.location_on,
+                                size: 20,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
             : Icon(
                 widget.markerIcon,
                 color: widget.markerIconColor,
@@ -663,11 +675,13 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
                   height: 100,
                   child: Row(
                     children: [
+                      Spacer(),
                       Container(
                         color: Colors.white,
                         width: MediaQuery.of(context).size.width / 5,
                         child: TextField(
                           controller: _radusController,
+                          keyboardType: TextInputType.number,
                           onChanged: ((value) {
                             setState(() {});
                           }),
@@ -685,8 +699,8 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
                           ),
                         ),
                       ),
-                      WideButton(widget.selectLocationButtonText,
-                          onPressed: () async {
+                      Spacer(),
+                      WideButton('Set Traget Location', onPressed: () async {
                         setState(() {
                           isLoading = true;
                         });
@@ -699,6 +713,7 @@ class _FlutterLocationPickerState extends State<FlutterLocationPicker>
                       },
                           style: widget.selectLocationButtonStyle,
                           textColor: widget.selectLocationTextColor),
+                      Spacer(),
                     ],
                   ),
                 )
